@@ -31,16 +31,18 @@ public class ShoppingCartView {
             switch (choice) {
                 case 1:
                     System.out.println(ProductFileManager.readFile());
+                    System.out.print("Nhập ID khách hàng: ");
+                    String idCustomer = scannerString.nextLine();
                     System.out.print("Nhập ID sản phẩm: ");
                     String idProduct = scannerString.nextLine();
-                    try {
-                        shoppingCartManager.addToCart(idProduct);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    System.out.print("Nhập số lượng: ");
+                    int quantity = scannerInt.nextInt();
+                    shoppingCartManager.addShoppingCartList(idCustomer, idProduct, quantity);
                     break;
                 case 2:
                     shoppingCartManager.displayAllCart();
+                    break;
+                case 3:
                     break;
                 case 0:
                     System.exit(0);

@@ -9,6 +9,14 @@ import java.util.Scanner;
 
 public class CustomerManager {
     ArrayList<Customer> customerList = new ArrayList<>();
+    private static CustomerManager customerManager;
+
+    public static synchronized CustomerManager getInstance(ArrayList<Customer> customerList) {
+        if (customerManager == null) {
+            customerManager = new CustomerManager(customerList);
+        }
+        return customerManager;
+    }
 
     public Customer enterCustomerInfo() {
         Scanner scanner = new Scanner(System.in);

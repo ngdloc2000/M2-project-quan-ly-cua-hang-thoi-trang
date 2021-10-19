@@ -1,65 +1,67 @@
 package controller;
 
+import model.Customer;
 import model.Product;
 import model.ShoppingCart;
+import storage.CustomerFileManager;
 import storage.ProductFileManager;
+import storage.ShoppingCartFileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class ShoppingCartManager {
-    ArrayList<Product> productList = ProductFileManager.readFile();
-    ShoppingCart shoppingCart;
-    ProductManager productManager = ProductManager.getInstance(productList);
     ArrayList<ShoppingCart> shoppingCartList = new ArrayList<>();
-    ArrayList<Product> productManagerList = productManager.getProductList();
+    ArrayList<Product> cartList = new ArrayList<>();
+    ArrayList<Product> productList = ProductFileManager.readFile();
+    ArrayList<Customer> customerList = CustomerFileManager.readFile();
 
     public ShoppingCartManager(ArrayList<ShoppingCart> shoppingCartList) throws IOException, ClassNotFoundException {
     }
 
-    public ShoppingCartManager(ShoppingCart shoppingCart, ProductManager productManager, ArrayList<ShoppingCart> shoppingCartList, ArrayList<Product> productManagerList) throws IOException, ClassNotFoundException {
-        this.shoppingCart = shoppingCart;
-        this.productManager = productManager;
-        this.shoppingCartList = shoppingCartList;
-        this.productManagerList = productManagerList;
-    }
-
-    public Product chooseProduct(String idProduct) {
-        for (int i = 0; i < productManagerList.size(); i++) {
-            if (productManagerList.get(i).getId().equals(idProduct)) {
-                return productManagerList.get(i);
+    public ArrayList<Product> addToCart(String idProduct, int quantity) {
+        for (int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getId().equals(idProduct)) {
+                Product productOld = productList.get(i);
+                Product productNew = new Product(productOld.getId(), productOld.getName(), productOld.getGender(), productOld.getType(), productOld.getSeason(), productOld.getPrice(), quantity, productOld.getDescription());
+                productOld.setQuantity(productOld.getQuantity() - quantity);
+                cartList.add(productNew);
+                try {
+                    ProductFileManager.writeFile(productList);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return cartList;
             }
         }
         return null;
     }
 
-    public void addToCart(String idProduct) throws IOException {
-        Product product = chooseProduct(idProduct);
-        System.out.println(product);
-//        shoppingCartList.add(product);
-//        ShoppingCartFileManager.writeFile(shoppingCartList);
+    public Customer chooseCustomer(String idCustomer) {
+        for (int i = 0; i < customerList.size(); i++) {
+            if (customerList.get(i).getId_Customer().equals(idCustomer)) {
+                return customerList.get(i);
+            }
+        }
+        return null;
+    }
+
+    public void addShoppingCartList(String idCustomer, String idProduct, int quantity) {
+        ArrayList<Product> cartProductList = addToCart(idProduct, quantity);
+        Customer customer = chooseCustomer(idCustomer);
+        ShoppingCart shoppingCart = new ShoppingCart(customer, cartProductList);
+        shoppingCartList.add(shoppingCart);
+        try {
+            ShoppingCartFileManager.writeFile(shoppingCartList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void displayAllCart() {
         for (ShoppingCart sp : shoppingCartList) {
-            System.out.println(sp);
+            System.out.println(sp.getCustomer().getName() + "\t" + sp.getProductCartList());
         }
-    }
-
-    public ShoppingCart getShoppingCart() {
-        return shoppingCart;
-    }
-
-    public void setShoppingCart(ShoppingCart shoppingCart) {
-        this.shoppingCart = shoppingCart;
-    }
-
-    public ProductManager getProductManager() {
-        return productManager;
-    }
-
-    public void setProductManager(ProductManager productManager) {
-        this.productManager = productManager;
     }
 
     public ArrayList<ShoppingCart> getShoppingCartList() {
@@ -70,19 +72,37 @@ public class ShoppingCartManager {
         this.shoppingCartList = shoppingCartList;
     }
 
-    public ArrayList<Product> getProductManagerList() {
-        return productManagerList;
+    public ArrayList<Product> getCartList() {
+        return cartList;
     }
 
-    public void setProductManagerList(ArrayList<Product> productManagerList) {
-        this.productManagerList = productManagerList;
+    public void setCartList(ArrayList<Product> cartList) {
+        this.cartList = cartList;
+    }
+
+    public ArrayList<Product> getProductList() {
+        return productList;
+    }
+
+    public void setProductList(ArrayList<Product> productList) {
+        this.productList = productList;
+    }
+
+    public ArrayList<Customer> getCustomerList() {
+        return customerList;
+    }
+
+    public void setCustomerList(ArrayList<Customer> customerList) {
+        this.customerList = customerList;
     }
 
     @Override
     public String toString() {
         return "ShoppingCartManager{" +
-                "shoppingCart=" + shoppingCart +
-                ", productList=" + productManagerList +
+                "shoppingCartList=" + shoppingCartList +
+                ", cartList=" + cartList +
+                ", productList=" + productList +
+                ", customerList=" + customerList +
                 '}';
     }
 }
