@@ -38,7 +38,7 @@ public class ShoppingCartView {
                     String idProduct = scannerString.nextLine();
                     System.out.print("Nhập số lượng: ");
                     int quantity = scannerInt.nextInt();
-                    shoppingCartManager.addShoppingCartList(idCustomer, idProduct, quantity);
+                    shoppingCartManager.addShoppingCart(idCustomer, idProduct, quantity);
                     break;
                 case 2:
                     break;

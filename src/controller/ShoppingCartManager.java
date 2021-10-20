@@ -16,29 +16,68 @@ public class ShoppingCartManager {
     ArrayList<Product> productList = ProductFileManager.readFile();
     ArrayList<Customer> customerList = CustomerFileManager.readFile();
 
-    public ShoppingCartManager(ArrayList<ShoppingCart> shoppingCartList) throws IOException, ClassNotFoundException {
-    }
-
     public ShoppingCartManager() throws IOException, ClassNotFoundException {
-
     }
 
-    public ArrayList<Product> addToCart(String idProduct, int quantity) {
-        for (int i = 0; i < productList.size(); i++) {
-            if (productList.get(i).getId().equals(idProduct)) {
-                Product productOld = productList.get(i);
-                Product productNew = new Product(productOld.getId(), productOld.getName(), productOld.getGender(), productOld.getType(), productOld.getSeason(), productOld.getPrice(), quantity, productOld.getDescription());
-                productOld.setQuantity(productOld.getQuantity() - quantity);
-                cartList.add(productNew);
-                try {
-                    ProductFileManager.writeFile(productList);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return cartList;
+    public boolean isShoppingCartExistByIdCustomer(String id) {
+        for (int i = 0; i < shoppingCartList.size(); i++) {
+            if (shoppingCartList.get(i).getCustomer().getId_Customer().equals(id)) {
+                return true;
             }
         }
-        return null;
+        return false;
+    }
+
+    public void addShoppingCart(String customerId, String productId, int quantity) throws IOException {
+        Customer customer = new Customer();
+        Product productNew;
+        if (!isShoppingCartExistByIdCustomer(customerId)) {
+            for (Customer c : customerList
+            ) {
+                if (c.getId_Customer().equals(customerId)) {
+                    customer = c;
+                }
+            }
+            for (int i = 0; i < productList.size(); i++) {
+                if (productList.get(i).getId().equals(productId)) {
+                    Product productOld = productList.get(i);
+                    productNew = new Product(productOld.getId(), productOld.getName(), productOld.getGender(), productOld.getType(), productOld.getSeason(), productOld.getPrice(), quantity, productOld.getDescription());
+                    cartList.add(productNew);
+                    productOld.setQuantity(productOld.getQuantity() - quantity);
+                    ProductFileManager.writeFile(productList);
+                }
+            }
+            ShoppingCart shoppingCart = new ShoppingCart(customer, cartList);
+            shoppingCartList.add(shoppingCart);
+            ShoppingCartFileManager.writeFile(shoppingCartList);
+        } else if (isShoppingCartExistByIdCustomer(customerId)) {
+            for (int i = 0; i < shoppingCartList.size(); i++) {
+                // Tìm giỏ khách hàng có tồn tại trong list không bằng mã khách hàng
+                if (shoppingCartList.get(i).getCustomer().getId_Customer().equals(customerId)) {
+                    for (int j = 0; j < shoppingCartList.get(i).getProductCartList().size(); j++) {
+                        // Kiểm tra xem sản phẩm thêm mới có trùng với sản phẩm cũ không thì set lại Quantity
+                        if (shoppingCartList.get(j).getProductCartList().get(j).getId().equals(productId)) {
+                            shoppingCartList.get(j).getProductCartList().get(j).setQuantity(shoppingCartList.get(j).getProductCartList().get(j).getQuantity() + quantity);
+                            Product productOld = productList.get(j);
+                            productOld.setQuantity(productOld.getQuantity() - quantity);
+                            ProductFileManager.writeFile(productList);
+                            ShoppingCartFileManager.writeFile(shoppingCartList);
+                        } else if (!shoppingCartList.get(j).getProductCartList().get(j).getId().equals(productId)) {
+                            for (int z = 0; z < productList.size(); z++) {
+                                if (productList.get(z).getId().equals(productId)) {
+                                    Product productOld = productList.get(z);
+                                    productNew = new Product(productOld.getId(), productOld.getName(), productOld.getGender(), productOld.getType(), productOld.getSeason(), productOld.getPrice(), quantity, productOld.getDescription());
+                                    shoppingCartList.get(j).getProductCartList().add(productNew);
+                                    productOld.setQuantity(productOld.getQuantity() - quantity);
+                                    ProductFileManager.writeFile(productList);
+                                    ShoppingCartFileManager.writeFile(shoppingCartList);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public Customer chooseCustomer(String idCustomer) {
@@ -48,14 +87,6 @@ public class ShoppingCartManager {
             }
         }
         return null;
-    }
-
-    public void addShoppingCartList(String idCustomer, String idProduct, int quantity) throws IOException {
-        ArrayList<Product> cartList = addToCart(idProduct, quantity);
-        Customer customer = chooseCustomer(idCustomer);
-        ShoppingCart shoppingCart = new ShoppingCart(customer, cartList);
-        shoppingCartList.add(shoppingCart);
-        ShoppingCartFileManager.writeFile(shoppingCartList);
     }
 
     public void deleteShoppingCart(String idCustomer) throws IOException {
