@@ -34,8 +34,9 @@ public class ShoppingCart implements Serializable {
     @Override
     public String toString() {
         return "ShoppingCart{" +
-                "customer=" + customer +
-                ", productList=" + productCartList +
+                "customeID = " + customer.getId_Customer() +
+                ", customeName = " + customer.getName() +
+                ", productList = " + productCartList +
                 '}';
     }
 }

@@ -95,11 +95,11 @@ public class Product implements Serializable {
         return "Product{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", gender='" + gender + '\'' +
-                ", type=" + type.getName() +
-                ", season=" + season.getName() +
-                ", price=" + price +
+//                ", description='" + description + '\'' +
+//                ", gender='" + gender + '\'' +
+//                ", type=" + type.getName() +
+//                ", season=" + season.getName() +
+//                ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
     }

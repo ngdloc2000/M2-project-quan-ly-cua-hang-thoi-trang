@@ -51,10 +51,19 @@ public class ShoppingCartManager {
     }
 
     public void addShoppingCartList(String idCustomer, String idProduct, int quantity) throws IOException {
-        ArrayList<Product> productCartList = addToCart(idProduct, quantity);
+        ArrayList<Product> cartList = addToCart(idProduct, quantity);
         Customer customer = chooseCustomer(idCustomer);
-        ShoppingCart shoppingCart = new ShoppingCart(customer, productCartList);
+        ShoppingCart shoppingCart = new ShoppingCart(customer, cartList);
         shoppingCartList.add(shoppingCart);
+        ShoppingCartFileManager.writeFile(shoppingCartList);
+    }
+
+    public void deleteShoppingCart(String idCustomer) throws IOException {
+        for (int i = 0; i < shoppingCartList.size(); i++) {
+            if (shoppingCartList.get(i).getCustomer().getId_Customer().equals(idCustomer)) {
+                shoppingCartList.remove(i);
+            }
+        }
         ShoppingCartFileManager.writeFile(shoppingCartList);
     }
 

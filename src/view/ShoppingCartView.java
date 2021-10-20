@@ -22,7 +22,9 @@ public class ShoppingCartView {
             System.out.println("------------------------------");
             System.out.println("QUẢN LÝ GIỎ HÀNG");
             System.out.println("1. Thêm sản phẩm vào giỏ hàng");
-            System.out.println("2. Hiển thị toàn bộ thông tin giỏ hàng");
+            System.out.println("2. Sửa giỏ hàng");
+            System.out.println("3. Xóa giỏ hàng");
+            System.out.println("4. Hiển thị toàn bộ thông tin giỏ hàng");
             System.out.println("0. Thoát");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
@@ -39,6 +41,15 @@ public class ShoppingCartView {
                     shoppingCartManager.addShoppingCartList(idCustomer, idProduct, quantity);
                     break;
                 case 2:
+                    break;
+                case 3:
+                    System.out.println("Danh sách giỏ hàng hiện tại");
+                    shoppingCartManager.displayAllShoppingCart();
+                    System.out.print("Nhập mã khách hàng: ");
+                    String id = scannerString.nextLine();
+                    shoppingCartManager.deleteShoppingCart(id);
+                    break;
+                case 4:
                     shoppingCartManager.displayAllShoppingCart();
                     break;
                 case 0:
