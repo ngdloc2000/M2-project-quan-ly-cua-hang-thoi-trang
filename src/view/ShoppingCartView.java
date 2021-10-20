@@ -12,9 +12,8 @@ import java.util.Scanner;
 public class ShoppingCartView {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         ArrayList<ShoppingCart> shoppingCartList = null;
-        shoppingCartList = ShoppingCartFileManager.readFile();
-
-        ShoppingCartManager shoppingCartManager = new ShoppingCartManager(shoppingCartList);
+//        shoppingCartList = ShoppingCartFileManager.readFile();
+        ShoppingCartManager shoppingCartManager = new ShoppingCartManager();
 
         Scanner scannerString = new Scanner(System.in);
         Scanner scannerInt = new Scanner(System.in);
@@ -40,9 +39,7 @@ public class ShoppingCartView {
                     shoppingCartManager.addShoppingCartList(idCustomer, idProduct, quantity);
                     break;
                 case 2:
-                    shoppingCartManager.displayAllCart();
-                    break;
-                case 3:
+                    shoppingCartManager.displayAllShoppingCart();
                     break;
                 case 0:
                     System.exit(0);

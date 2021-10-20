@@ -1,6 +1,5 @@
 package controller;
 
-import model.Customer;
 import model.Product;
 import model.SeasonProduct;
 import model.TypeProduct;
@@ -16,29 +15,39 @@ public class ProductManager {
     ArrayList<Product> productList = new ArrayList<>();
     ArrayList<TypeProduct> typeProductList = TypeProductFileManager.readFile();
     ArrayList<SeasonProduct> seasonProductList = SeasonProductFileManager.readFile();
-    private static ProductManager productManager;
 
-    public static synchronized ProductManager getInstance(ArrayList<Product> productList) {
-        if (productManager == null) {
-            productManager = new ProductManager(productList);
+    public SeasonProduct getSeasonProductByID(String idOldArray, ArrayList<SeasonProduct> seasonProductList) {
+        for (int i = 0; i < seasonProductList.size(); i++) {
+            if (seasonProductList.get(i).getId().equals(idOldArray)) {
+                return seasonProductList.get(i);
+            }
         }
-        return productManager;
+        return null;
     }
 
-    public TypeProduct findTypeProductByName(String name) {
+    public void updateSeasonProduct() throws IOException {
+        for (int i = 0; i < productList.size() - 1; i++) {
+                String idOldArray = productList.get(i).getSeason().getId();
+                SeasonProduct seasonProductNew = getSeasonProductByID(idOldArray, seasonProductList);
+                productList.get(i).setSeason(seasonProductNew);
+                ProductFileManager.writeFile(productList);
+        }
+    }
+
+    public TypeProduct findTypeProductByID(String id) {
         for (TypeProduct tp : typeProductList
         ) {
-            if (tp.getName().equals(name)) {
+            if (tp.getId().equals(id)) {
                 return tp;
             }
         }
         return null;
     }
 
-    public SeasonProduct findSeasonProductByName(String name) {
+    public SeasonProduct findSeasonProductByID(String id) {
         for (SeasonProduct sp : seasonProductList
         ) {
-            if (sp.getName().equals(name)) {
+            if (sp.getId().equals(id)) {
                 return sp;
             }
         }
@@ -62,25 +71,25 @@ public class ProductManager {
         String description = scanner.nextLine();
 
 
-        System.out.println("Nhập tên thể loại cho sản phầm: ");
+        System.out.println("Nhập mã thể loại cho sản phầm: ");
         System.out.println(TypeProductFileManager.readFile());
         TypeProduct type = new TypeProduct();
         String typeInput = scanner.nextLine();
-        if (findTypeProductByName(typeInput) == null) {
+        if (findTypeProductByID(typeInput) == null) {
             System.out.println("Không có thể loại sản phẩm này!!!");
         } else {
-            type = findTypeProductByName(typeInput);
+            type = findTypeProductByID(typeInput);
         }
 
 
-        System.out.println("Nhập tên mùa cho sản phầm: ");
+        System.out.println("Nhập mã mùa cho sản phầm: ");
         System.out.println(SeasonProductFileManager.readFile());
         SeasonProduct season = new SeasonProduct();
         String seasonInput = scanner.nextLine();
-        if (findSeasonProductByName(seasonInput) == null) {
+        if (findSeasonProductByID(seasonInput) == null) {
             System.out.println("Không có mùa này!!!");
         } else {
-            season = findSeasonProductByName(seasonInput);
+            season = findSeasonProductByID(seasonInput);
         }
 
         Product product = new Product(id, name, gender, type, season, price, quantity, description);
@@ -90,6 +99,27 @@ public class ProductManager {
     public void addProduct() throws IOException {
         Product product = enterProductInfo();
         productList.add(product);
+        ProductFileManager.writeFile(productList);
+    }
+
+    public void editProduct(String id, Product product) throws IOException {
+        for (int i = 0; i < productList.size(); i++) {
+            if (productList.get(i).getId().equals(id)) {
+                productList.get(i).setId(product.getId());
+                productList.get(i).setName(product.getName());
+                productList.get(i).setGender(product.getGender());
+                productList.get(i).setType(product.getType());
+                productList.get(i).setSeason(product.getSeason());
+                productList.get(i).setPrice(product.getPrice());
+                productList.get(i).setQuantity(product.getQuantity());
+                productList.get(i).setDescription(product.getDescription());
+                ProductFileManager.writeFile(productList);
+            }
+        }
+    }
+
+    public void deleteProduct(int index) throws IOException {
+        productList.remove(index);
         ProductFileManager.writeFile(productList);
     }
 

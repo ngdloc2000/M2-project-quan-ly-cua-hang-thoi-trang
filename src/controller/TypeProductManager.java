@@ -1,6 +1,8 @@
 package controller;
 
+import model.Customer;
 import model.TypeProduct;
+import storage.CustomerFileManager;
 import storage.TypeProductFileManager;
 
 import java.io.IOException;
@@ -25,6 +27,22 @@ public class TypeProductManager {
     public void addTypeProduct() throws IOException {
         TypeProduct typeProduct = enterTypeProductInfo();
         typeProductList.add(typeProduct);
+        TypeProductFileManager.writeFile(typeProductList);
+    }
+
+    public void editTypeProduct(String id, TypeProduct typeProduct) throws IOException {
+        for (int i = 0; i < typeProductList.size(); i++) {
+            if (typeProductList.get(i).getId().equals(id)) {
+                typeProductList.get(i).setId(typeProduct.getId());
+                typeProductList.get(i).setName(typeProduct.getName());
+                typeProductList.get(i).setDescription(typeProduct.getDescription());
+                TypeProductFileManager.writeFile(typeProductList);
+            }
+        }
+    }
+
+    public void deleteTypeProduct(int index) throws IOException {
+        typeProductList.remove(index);
         TypeProductFileManager.writeFile(typeProductList);
     }
 

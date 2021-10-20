@@ -2,7 +2,9 @@ package controller;
 
 import model.Customer;
 import model.SeasonProduct;
+import model.TypeProduct;
 import storage.SeasonProductFileManager;
+import storage.TypeProductFileManager;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -33,6 +35,24 @@ public class SeasonProductManager {
     public void addSeasonProduct() throws IOException {
         SeasonProduct seasonProduct = enterSeasonProductInfo();
         seasonProductList.add(seasonProduct);
+        SeasonProductFileManager.writeFile(seasonProductList);
+    }
+
+    public void editSeasonProduct(String id, SeasonProduct seasonProduct) throws IOException {
+        for (int i = 0; i < seasonProductList.size(); i++) {
+            if (seasonProductList.get(i).getId().equals(id)) {
+                seasonProductList.get(i).setId(seasonProduct.getId());
+                seasonProductList.get(i).setName(seasonProduct.getName());
+                seasonProductList.get(i).setStartDate(seasonProduct.getStartDate());
+                seasonProductList.get(i).setEndDate(seasonProduct.getEndDate());
+                seasonProductList.get(i).setDescription(seasonProduct.getDescription());
+                SeasonProductFileManager.writeFile(seasonProductList);
+            }
+        }
+    }
+
+    public void deleteSeasonProduct(int index) throws IOException {
+        seasonProductList.remove(index);
         SeasonProductFileManager.writeFile(seasonProductList);
     }
 

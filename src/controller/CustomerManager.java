@@ -9,14 +9,6 @@ import java.util.Scanner;
 
 public class CustomerManager {
     ArrayList<Customer> customerList = new ArrayList<>();
-    private static CustomerManager customerManager;
-
-    public static synchronized CustomerManager getInstance(ArrayList<Customer> customerList) {
-        if (customerManager == null) {
-            customerManager = new CustomerManager(customerList);
-        }
-        return customerManager;
-    }
 
     public Customer enterCustomerInfo() {
         Scanner scanner = new Scanner(System.in);
@@ -36,6 +28,23 @@ public class CustomerManager {
     public void addCustomer() throws IOException {
         Customer customer = enterCustomerInfo();
         customerList.add(customer);
+        CustomerFileManager.writeFile(customerList);
+    }
+
+    public void editCustomer(String id, Customer customer) throws IOException {
+        for (int i = 0; i < customerList.size(); i++) {
+            if (customerList.get(i).getId_Customer().equals(id)) {
+                customerList.get(i).setId_Customer(customer.getId_Customer());
+                customerList.get(i).setName(customer.getName());
+                customerList.get(i).setAge(customer.getAge());
+                customerList.get(i).setPhoneNumber(customer.getPhoneNumber());
+                CustomerFileManager.writeFile(customerList);
+            }
+        }
+    }
+
+    public void deleteCustomer(int index) throws IOException {
+        customerList.remove(index);
         CustomerFileManager.writeFile(customerList);
     }
 

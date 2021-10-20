@@ -1,7 +1,6 @@
 package storage;
 
 import model.ShoppingCart;
-import model.TypeProduct;
 
 import java.io.*;
 import java.util.ArrayList;

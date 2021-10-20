@@ -42,6 +42,14 @@ public class Customer implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public String toString() {
         return "Customer{" +

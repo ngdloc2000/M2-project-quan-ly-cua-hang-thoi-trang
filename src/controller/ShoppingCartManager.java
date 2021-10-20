@@ -11,12 +11,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class ShoppingCartManager {
-    ArrayList<ShoppingCart> shoppingCartList = new ArrayList<>();
+    ArrayList<ShoppingCart> shoppingCartList = ShoppingCartFileManager.readFile();
     ArrayList<Product> cartList = new ArrayList<>();
     ArrayList<Product> productList = ProductFileManager.readFile();
     ArrayList<Customer> customerList = CustomerFileManager.readFile();
 
     public ShoppingCartManager(ArrayList<ShoppingCart> shoppingCartList) throws IOException, ClassNotFoundException {
+    }
+
+    public ShoppingCartManager() throws IOException, ClassNotFoundException {
+
     }
 
     public ArrayList<Product> addToCart(String idProduct, int quantity) {
@@ -46,21 +50,17 @@ public class ShoppingCartManager {
         return null;
     }
 
-    public void addShoppingCartList(String idCustomer, String idProduct, int quantity) {
-        ArrayList<Product> cartProductList = addToCart(idProduct, quantity);
+    public void addShoppingCartList(String idCustomer, String idProduct, int quantity) throws IOException {
+        ArrayList<Product> productCartList = addToCart(idProduct, quantity);
         Customer customer = chooseCustomer(idCustomer);
-        ShoppingCart shoppingCart = new ShoppingCart(customer, cartProductList);
+        ShoppingCart shoppingCart = new ShoppingCart(customer, productCartList);
         shoppingCartList.add(shoppingCart);
-        try {
-            ShoppingCartFileManager.writeFile(shoppingCartList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ShoppingCartFileManager.writeFile(shoppingCartList);
     }
 
-    public void displayAllCart() {
+    public void displayAllShoppingCart() {
         for (ShoppingCart sp : shoppingCartList) {
-            System.out.println(sp.getCustomer().getName() + "\t" + sp.getProductCartList());
+            System.out.println(sp);
         }
     }
 
