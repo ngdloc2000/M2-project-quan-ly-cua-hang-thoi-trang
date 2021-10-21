@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class ShoppingCart implements Serializable {
     Customer customer;
     ArrayList<Product> productCartList;
+    private boolean isPaid;
 
     public ShoppingCart() {
     }
@@ -13,6 +14,7 @@ public class ShoppingCart implements Serializable {
     public ShoppingCart(Customer customer, ArrayList<Product> productList) {
         this.customer = customer;
         this.productCartList = productList;
+        this.isPaid = false;
     }
 
     public Customer getCustomer() {
@@ -31,12 +33,21 @@ public class ShoppingCart implements Serializable {
         this.productCartList = productCartList;
     }
 
+    public boolean isPaid() {
+        return isPaid;
+    }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
     @Override
     public String toString() {
         return "ShoppingCart{" +
                 "customeID = " + customer.getId_Customer() +
                 ", customeName = " + customer.getName() +
                 ", productList = " + productCartList +
+                ", isPaid = " + isPaid +
                 '}';
     }
 }

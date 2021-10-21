@@ -53,7 +53,7 @@ public class ShoppingCartManager {
         } else if (isShoppingCartExistByIdCustomer(customerId)) {
             for (int i = 0; i < shoppingCartList.size(); i++) {
                 // Khách hàng đã có trong giỏ hàng
-                if (shoppingCartList.get(i).getCustomer().getId_Customer().equals(customerId)) {
+                if (shoppingCartList.get(i).getCustomer().getId_Customer().equals(customerId) && shoppingCartList.get(i).isPaid() == false) {
                     ShoppingCart shoppingCart = shoppingCartList.get(i);
                     int index = -1;
                     for (int j = 0; j < shoppingCartList.get(i).getProductCartList().size(); j++) {
@@ -61,7 +61,6 @@ public class ShoppingCartManager {
                         if (shoppingCart.getProductCartList().get(j).getId().equals(productId)) {
                             index = j;
                             break;
-
                         }
                     }
                     if(index != -1){

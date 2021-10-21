@@ -99,7 +99,7 @@ public class Product implements Serializable {
 //                ", gender='" + gender + '\'' +
 //                ", type=" + type.getName() +
 //                ", season=" + season.getName() +
-//                ", price=" + price +
+                ", price=" + price +
                 ", quantity=" + quantity +
                 '}';
     }

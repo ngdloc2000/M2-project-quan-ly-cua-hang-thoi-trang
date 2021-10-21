@@ -3,7 +3,6 @@ package view;
 import controller.ShoppingCartManager;
 import model.ShoppingCart;
 import storage.ProductFileManager;
-import storage.ShoppingCartFileManager;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,8 +10,6 @@ import java.util.Scanner;
 
 public class ShoppingCartView {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        ArrayList<ShoppingCart> shoppingCartList = null;
-//        shoppingCartList = ShoppingCartFileManager.readFile();
         ShoppingCartManager shoppingCartManager = new ShoppingCartManager();
 
         Scanner scannerString = new Scanner(System.in);
