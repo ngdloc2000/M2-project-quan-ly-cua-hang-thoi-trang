@@ -19,6 +19,7 @@ public class BillView {
             System.out.println("QUẢN LÝ HÓA ĐƠN");
             System.out.println("1. Tạo hóa đơn cho khách hàng");
             System.out.println("2. Hiển thị toàn bộ hóa đơn");
+            System.out.println("3. Chi tiết thông tin của 1 khách hàng");
             System.out.println("0. Thoát");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
@@ -33,6 +34,13 @@ public class BillView {
                     break;
                 case 2:
                     billManager.displayAllBill();
+                    break;
+                case 3:
+                    System.out.print("Nhập mã khách hàng: ");
+                    customerId = scanner.nextLine();
+                    System.out.println("THÔNG TIN KHÁCH HÀNG");
+                    billManager.displayInfoAPersonById(customerId);
+                    System.out.println("Số lượng hóa đơn của khách hàng là: " + billManager.countBillAPersonById(customerId));
                     break;
                 case 0:
                     System.exit(0);

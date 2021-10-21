@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProductView {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         ArrayList<Product> productList = null;
         try {
             productList = ProductFileManager.readFile();
@@ -29,6 +29,8 @@ public class ProductView {
             System.out.println("2. Sửa thông tin sản phẩm");
             System.out.println("3. Xóa sản phẩm");
             System.out.println("4. Hiển thị toàn bộ thông tin sản phẩm");
+            System.out.println("5. Sắp xếp sản phẩm theo số lượng tăng dần");
+            System.out.println("6. Sắp xếp sản phẩm theo giá tăng dần");
             System.out.println("0. Thoát");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
@@ -72,6 +74,12 @@ public class ProductView {
                     break;
                 case 4:
                     productManager.displayAllProducts();
+                    break;
+                case 5:
+                    productManager.sortProductByQuantity();
+                    break;
+                case 6:
+                    productManager.sortProductByPrice();
                     break;
                 case 0:
                     System.exit(0);

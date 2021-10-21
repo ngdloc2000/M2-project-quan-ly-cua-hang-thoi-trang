@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ProductManager {
-    ArrayList<Product> productList = new ArrayList<>();
+    ArrayList<Product> productList = ProductFileManager.readFile();
     ArrayList<TypeProduct> typeProductList = TypeProductFileManager.readFile();
     ArrayList<SeasonProduct> seasonProductList = SeasonProductFileManager.readFile();
 
@@ -27,10 +27,10 @@ public class ProductManager {
 
     public void updateSeasonProduct() throws IOException {
         for (int i = 0; i < productList.size() - 1; i++) {
-                String idOldArray = productList.get(i).getSeason().getId();
-                SeasonProduct seasonProductNew = getSeasonProductByID(idOldArray, seasonProductList);
-                productList.get(i).setSeason(seasonProductNew);
-                ProductFileManager.writeFile(productList);
+            String idOldArray = productList.get(i).getSeason().getId();
+            SeasonProduct seasonProductNew = getSeasonProductByID(idOldArray, seasonProductList);
+            productList.get(i).setSeason(seasonProductNew);
+            ProductFileManager.writeFile(productList);
         }
     }
 
@@ -125,19 +125,53 @@ public class ProductManager {
 
     public void displayAllProducts() {
         for (Product p : productList
-             ) {
+        ) {
             System.out.println(p);
         }
     }
 
-    public ProductManager() {
+    public void sortProductByQuantity() {
+        for (int i = 1; i < productList.size(); i++) {
+            for (int j = 0; j < productList.size() - i; j++) {
+                if (productList.get(j).getQuantity() > productList.get(j + 1).getQuantity()) {
+                    Product temp = productList.get(j);
+                    productList.set(j,productList.get(j+1));
+                    productList.set(j+1, temp);
+                }
+            }
+        }
+
+        System.out.println("Danh sách sản phẩm sau khi sắp xếp theo số lượng");
+        for (Product p : productList) {
+            System.out.println(p);
+        }
     }
 
-    public ProductManager(ArrayList<Product> productList) {
+    public void sortProductByPrice() {
+        for (int i = 1; i < productList.size(); i++) {
+            for (int j = 0; j < productList.size() - i; j++) {
+                if (productList.get(j).getPrice() > productList.get(j + 1).getPrice()) {
+                    Product temp = productList.get(j);
+                    productList.set(j, productList.get(j + 1));
+                    productList.set(j + 1, temp);
+                }
+            }
+        }
+
+        System.out.println("Danh sách sản phẩm sau khi sắp xếp theo giá sản phẩm");
+        for (Product p : productList) {
+            System.out.println(p);
+        }
+    }
+
+    public ProductManager() throws IOException, ClassNotFoundException {
+    }
+
+    public ProductManager(ArrayList<Product> productList) throws IOException, ClassNotFoundException {
         this.productList = productList;
     }
 
-    public ProductManager(ArrayList<Product> productList, ArrayList<TypeProduct> typeProductList, ArrayList<SeasonProduct> seasonProductList) {
+    public ProductManager(ArrayList<Product> productList, ArrayList<TypeProduct> typeProductList, ArrayList<SeasonProduct> seasonProductList) throws IOException, ClassNotFoundException {
         this.productList = productList;
         this.typeProductList = typeProductList;
         this.seasonProductList = seasonProductList;

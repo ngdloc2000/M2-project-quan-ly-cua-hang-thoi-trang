@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class BillManager {
-    ArrayList<Bill> billList = new ArrayList<>();
+    ArrayList<Bill> billList = BillFileManager.readFile();
     ArrayList<ShoppingCart> shoppingCartList = ShoppingCartFileManager.readFile();
 
     public int chargeACart(String customerId) throws IOException {
@@ -54,6 +54,25 @@ public class BillManager {
         for (Bill b : billList
         ) {
             System.out.println(b);
+        }
+    }
+
+    public int countBillAPersonById(String id) {
+        int count = 0;
+        for (int i = 0; i < billList.size(); i++) {
+            if (billList.get(i).getCustomer().getId_Customer().equals(id)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void displayInfoAPersonById(String id) {
+        for (int i = 0; i < billList.size(); i++) {
+            if (billList.get(i).getCustomer().getId_Customer().equals(id)) {
+                Customer customer = billList.get(i).getCustomer();
+                System.out.println("Mã KH: " + customer.getId_Customer() + " Tên KH: " + customer.getName() + " Tuổi: " + customer.getAge() + " SĐT: " + customer.getPhoneNumber());
+            }
         }
     }
 
