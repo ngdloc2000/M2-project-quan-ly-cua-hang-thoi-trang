@@ -52,26 +52,37 @@ public class ShoppingCartManager {
             ShoppingCartFileManager.writeFile(shoppingCartList);
         } else if (isShoppingCartExistByIdCustomer(customerId)) {
             for (int i = 0; i < shoppingCartList.size(); i++) {
-                // Tìm giỏ khách hàng có tồn tại trong list không bằng mã khách hàng
+                // Khách hàng đã có trong giỏ hàng
                 if (shoppingCartList.get(i).getCustomer().getId_Customer().equals(customerId)) {
+                    ShoppingCart shoppingCart = shoppingCartList.get(i);
+                    int index = -1;
                     for (int j = 0; j < shoppingCartList.get(i).getProductCartList().size(); j++) {
-                        // Kiểm tra xem sản phẩm thêm mới có trùng với sản phẩm cũ không thì set lại Quantity
-                        if (shoppingCartList.get(j).getProductCartList().get(j).getId().equals(productId)) {
-                            shoppingCartList.get(j).getProductCartList().get(j).setQuantity(shoppingCartList.get(j).getProductCartList().get(j).getQuantity() + quantity);
-                            Product productOld = productList.get(j);
-                            productOld.setQuantity(productOld.getQuantity() - quantity);
-                            ProductFileManager.writeFile(productList);
-                            ShoppingCartFileManager.writeFile(shoppingCartList);
-                        } else if (!shoppingCartList.get(j).getProductCartList().get(j).getId().equals(productId)) {
-                            for (int z = 0; z < productList.size(); z++) {
-                                if (productList.get(z).getId().equals(productId)) {
-                                    Product productOld = productList.get(z);
-                                    productNew = new Product(productOld.getId(), productOld.getName(), productOld.getGender(), productOld.getType(), productOld.getSeason(), productOld.getPrice(), quantity, productOld.getDescription());
-                                    shoppingCartList.get(j).getProductCartList().add(productNew);
-                                    productOld.setQuantity(productOld.getQuantity() - quantity);
-                                    ProductFileManager.writeFile(productList);
-                                    ShoppingCartFileManager.writeFile(shoppingCartList);
-                                }
+                        // Thêm sản phẩm mà sản phẩm đã có trong giỏ hàng -> set lại quantity
+                        if (shoppingCart.getProductCartList().get(j).getId().equals(productId)) {
+                            index = j;
+                            break;
+
+                        }
+                    }
+                    if(index != -1){
+                        shoppingCart.getProductCartList().get(index).setQuantity(shoppingCart.getProductCartList().get(index).getQuantity() + quantity);
+                        for (int z = 0; z < productList.size(); z++) {
+                            if (productList.get(z).getId().equals(productId)) {
+                                productList.get(z).setQuantity(productList.get(z).getQuantity() - quantity);
+                                ProductFileManager.writeFile(productList);
+                            }
+                        }
+                        ShoppingCartFileManager.writeFile(shoppingCartList);
+                    }else {
+                        for (int k = 0; k < productList.size(); k++) {
+                            if (productList.get(k).getId().equals(productId)) {
+                                Product productOld = productList.get(k);
+                                Product productNew1 = new Product(productOld.getId(), productOld.getName(), productOld.getGender(), productOld.getType(), productOld.getSeason(), productOld.getPrice(), quantity, productOld.getDescription());
+                                shoppingCart.getProductCartList().add(productNew1);
+                                productOld.setQuantity(productOld.getQuantity() - quantity);
+                                ProductFileManager.writeFile(productList);
+                                ShoppingCartFileManager.writeFile(shoppingCartList);
+                                break;
                             }
                         }
                     }
