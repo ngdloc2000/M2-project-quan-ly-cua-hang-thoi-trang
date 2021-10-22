@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class ShoppingCartView {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void displayShoppingCartView() throws IOException, ClassNotFoundException {
         ShoppingCartManager shoppingCartManager = new ShoppingCartManager();
 
         Scanner scannerString = new Scanner(System.in);
@@ -22,7 +22,7 @@ public class ShoppingCartView {
             System.out.println("2. Sửa giỏ hàng");
             System.out.println("3. Xóa giỏ hàng");
             System.out.println("4. Hiển thị toàn bộ thông tin giỏ hàng");
-            System.out.println("0. Thoát");
+            System.out.println("0. Quay lại");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
 
@@ -50,7 +50,6 @@ public class ShoppingCartView {
                     shoppingCartManager.displayAllShoppingCart();
                     break;
                 case 0:
-                    System.exit(0);
             }
         }
     }

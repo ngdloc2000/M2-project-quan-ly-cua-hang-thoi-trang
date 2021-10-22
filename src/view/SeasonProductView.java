@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SeasonProductView {
-    public static void main(String[] args) {
+    public static void displaySeasonProductView() {
         ArrayList<SeasonProduct> seasonProductList = null;
         seasonProductList = SeasonProductFileManager.readFile();
 
@@ -24,7 +24,7 @@ public class SeasonProductView {
             System.out.println("2. Sửa thông tin của mùa sản phẩm");
             System.out.println("3. Xóa mùa sản phẩm");
             System.out.println("4. Hiển thị toàn bộ thông tin các mùa");
-            System.out.println("0. Thoát");
+            System.out.println("0. Quay lại");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
             Scanner scanner = new Scanner(System.in);
@@ -70,7 +70,6 @@ public class SeasonProductView {
                     seasonProductManager.displayAllSeasonProducts();
                     break;
                 case 0:
-                    System.exit(0);
             }
         }
     }

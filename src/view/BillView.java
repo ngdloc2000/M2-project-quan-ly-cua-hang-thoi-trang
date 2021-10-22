@@ -6,9 +6,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class BillView {
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void displayBillView() throws IOException, ClassNotFoundException {
         BillManager billManager = new BillManager();
-
 
         Scanner scannerInt = new Scanner(System.in);
         Scanner scanner = new Scanner(System.in);
@@ -20,7 +19,7 @@ public class BillView {
             System.out.println("1. Tạo hóa đơn cho khách hàng");
             System.out.println("2. Hiển thị toàn bộ hóa đơn");
             System.out.println("3. Chi tiết thông tin của 1 khách hàng");
-            System.out.println("0. Thoát");
+            System.out.println("0. Quay lại");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
 
@@ -43,7 +42,6 @@ public class BillView {
                     System.out.println("Số lượng hóa đơn của khách hàng là: " + billManager.countBillAPersonById(customerId));
                     break;
                 case 0:
-                    System.exit(0);
             }
         }
     }

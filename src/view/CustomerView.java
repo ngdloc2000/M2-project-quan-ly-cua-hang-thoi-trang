@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CustomerView {
-    public static void main(String[] args) {
+    public static void displayCustomerView() {
         ArrayList<Customer> customerList = null;
         try {
             customerList = CustomerFileManager.readFile();
@@ -30,7 +30,7 @@ public class CustomerView {
             System.out.println("2. Sửa thông tin khách hàng");
             System.out.println("3. Xóa thông tin khách hàng");
             System.out.println("4. Hiển thị toàn bộ thông tin khách hàng");
-            System.out.println("0. Thoát");
+            System.out.println("0. Quay lại");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
 
@@ -75,7 +75,6 @@ public class CustomerView {
                     customerManager.displayAllCustomers();
                     break;
                 case 0:
-                    System.exit(0);
             }
         }
     }

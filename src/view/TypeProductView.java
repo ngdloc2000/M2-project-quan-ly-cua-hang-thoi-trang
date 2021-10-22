@@ -4,13 +4,12 @@ import controller.TypeProductManager;
 import model.TypeProduct;
 import storage.TypeProductFileManager;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TypeProductView {
-    public static void main(String[] args) {
+    public static void displayTypeProductView() {
         ArrayList<TypeProduct> typeProductList = null;
         typeProductList = TypeProductFileManager.readFile();
         TypeProductManager typeProductManager = new TypeProductManager(typeProductList);
@@ -25,7 +24,7 @@ public class TypeProductView {
             System.out.println("2. Sửa thông tin loại sản phẩm");
             System.out.println("3. Xóa loại sản phẩm");
             System.out.println("4. Hiển thị toàn bộ thông tin loại sản phẩm");
-            System.out.println("0. Thoát");
+            System.out.println("0. Quay lại");
             System.out.print("Nhập lựa chọn: ");
             choice = scannerInt.nextInt();
 
@@ -70,7 +69,6 @@ public class TypeProductView {
                     typeProductManager.displayAllTypeProducts();
                     break;
                 case 0:
-                    System.exit(0);
             }
         }
     }
